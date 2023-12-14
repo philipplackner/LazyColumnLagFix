@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalLayoutApi::class
+)
 
 package com.plcoding.lazycolumnlagfix
 
@@ -20,26 +22,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plcoding.lazycolumnlagfix.ui.theme.LazyColumnLagFixTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val resourceIds = listOf(
-            R.drawable.pic1,
-            R.drawable.pic2,
-            R.drawable.pic3,
-            R.drawable.pic4,
+        val compressedResourceIds = listOf(
+            R.drawable.pic1_compressed,
+            R.drawable.pic2_compressed,
+            R.drawable.pic3_compressed,
+            R.drawable.pic4_compressed,
         )
         val tags = listOf(
             "speaker",
@@ -48,7 +47,7 @@ class MainActivity : ComponentActivity() {
         )
         val images = (1..100).map {
             MyImage(
-                resId = resourceIds.random(),
+                resId = compressedResourceIds.random(),
                 title = "Random title $it",
                 tags = tags
                     .shuffled()
@@ -64,7 +63,10 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(
-                        items = images
+                        items = images,
+                        key = {
+                            it.id
+                        }
                     ) { image ->
                         ImageDetails(image)
                     }
